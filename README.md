@@ -1,544 +1,625 @@
-![LumenFlow](./README/img/cover.png)
+<p align="center">
+  <img src="docs/images/01_hero_overview.png" width="100%" alt="Cross-Platform-AI-Chat-Application"/>
+</p>
 
-> A cross-platform AI chat application built with Flutter, supporting 12+ AI platforms with SQLite-based local storage and comprehensive conversation management.
+<h1 align="center">Cross-Platform-AI-Chat-Application</h1>
 
-[English Version](./README.md) | [中文版本](./README/README.zh_CN.md)
+<p align="center">
+  <strong>LumenFlow — a Flutter-based AI chat application for Android, Windows, and Linux with 12+ AI providers, local SQLite storage, multimodal chat, prompt presets, and full conversation management.</strong>
+</p>
 
-## Overview
+<p align="center">
+  <img src="https://img.shields.io/badge/Flutter-Cross--Platform-02569B?logo=flutter&logoColor=white" alt="Flutter"/>
+  <img src="https://img.shields.io/badge/Dart-Language-0175C2?logo=dart&logoColor=white" alt="Dart"/>
+  <img src="https://img.shields.io/badge/AI%20Providers-12%2B-7C3AED" alt="AI Providers"/>
+  <img src="https://img.shields.io/badge/Storage-SQLite-003B57?logo=sqlite&logoColor=white" alt="SQLite"/>
+  <img src="https://img.shields.io/badge/Platforms-Android%20%7C%20Windows%20%7C%20Linux-0EA5E9" alt="Platforms"/>
+  <img src="https://img.shields.io/badge/License-MIT-22C55E" alt="MIT License"/>
+</p>
 
-LumenFlow (Chinese: 流光) is a modern AI chat application built with Flutter that provides a seamless conversational experience across Android, Windows, and Linux platforms. With support for 12+ AI service providers, SQLite database for local data persistence, and rich multi-modal capabilities, it offers a versatile AI assistant experience.
+<p align="center">
+  <a href="#-overview">Overview</a> •
+  <a href="#-product-preview">Preview</a> •
+  <a href="#-features">Features</a> •
+  <a href="#-architecture">Architecture</a> •
+  <a href="#-configuration">Configuration</a> •
+  <a href="#-building">Building</a> •
+  <a href="#-project-structure">Structure</a>
+</p>
 
-- **License**: MIT
-- **Platforms**: Android, Windows, Linux
-- **Languages**: Dart/Flutter
+---
 
-## Features
+## 🚀 Overview
+
+**Cross-Platform-AI-Chat-Application** is a modern Flutter AI chat client whose application experience is branded as **LumenFlow**. It is designed to provide one consistent conversational interface across **Android, Windows, and Linux** while supporting **12+ AI providers**, local SQLite persistence, rich conversation management, multimodal attachments, prompt presets, internationalization, and configurable platform/model settings.
+
+The application uses a provider-based architecture so different AI services can be managed through a common interface while still keeping provider-specific endpoints, model lists, and configuration options isolated.
+
+### Core idea
+
+```text
+One Flutter Application
+        ↓
+12+ AI Providers
+        ↓
+Unified Streaming Chat Experience
+        ↓
+Images / Files / Audio / Video
+        ↓
+Local SQLite Conversation Storage
+        ↓
+Profiles + Presets + Themes + Languages
+        ↓
+Android / Windows / Linux
+```
+
+---
+
+## ✨ Product Preview
+
+> [!NOTE]
+> The five visuals below are stored as **five separate image files** in `docs/images/` and are displayed individually in this README.
+
+### 1. Cross-Platform Product Overview
+
+<p align="center">
+  <img src="docs/images/01_hero_overview.png" width="100%" alt="Cross-platform AI chat application overview"/>
+</p>
+
+A high-level view of the application experience across desktop and mobile, with Flutter, Dart, SQLite, multimodal support, and multiple AI platforms working under one interface.
+
+---
+
+### 2. Multi-AI Platform Management
+
+<p align="center">
+  <img src="docs/images/02_multi_ai_platforms.png" width="100%" alt="Multi-AI platform management"/>
+</p>
+
+Configure multiple AI providers independently, maintain separate model lists and API settings, and switch between cloud or local model providers from a unified platform-management layer.
+
+---
+
+### 3. Streaming Multi-Modal Chat
+
+<p align="center">
+  <img src="docs/images/03_multimodal_chat.png" width="100%" alt="Streaming multimodal AI chat"/>
+</p>
+
+A modern conversational interface with streaming responses, Markdown rendering, code-block copy actions, thinking-mode support, and attachments for images, files, audio, and video.
+
+---
+
+### 4. Conversation & Local Data Management
+
+<p align="center">
+  <img src="docs/images/04_conversation_data.png" width="100%" alt="Conversation and local SQLite data management"/>
+</p>
+
+Conversation history stays available locally through SQLite, with search, caching, export/import, attachment metadata, automatic migration, and structured data management.
+
+---
+
+### 5. Personalization, Themes & Languages
+
+<p align="center">
+  <img src="docs/images/05_settings_localization.png" width="100%" alt="Settings localization prompt presets and themes"/>
+</p>
+
+Personalize the application through user profiles, prompt presets, language selection, platform-specific settings, and light/dark/system appearance modes.
+
+---
+
+## 🌟 Features
 
 ### Core AI Capabilities
-- **12+ AI Platform Support**: OpenAI, Claude, Google Gemini, DeepSeek, SiliconFlow, MiniMax, Zhipu AI, Kimi, LM-Studio (local deployment), Grok, OpenRouter, and Other (custom OpenAI-compatible APIs)
-- **Provider Pattern Architecture**: Clean abstraction layer for AI providers with unified interface
-- **Multi-AI Platform Management**: Configure and manage multiple AI platforms simultaneously with independent settings, model lists, and platform-specific configurations
-- **Streaming Responses**: Real-time streaming output for responsive chat experience
-- **Thinking Mode**: AI thinking process visualization for supported models
-- **Auto Title Generation**: Automatic conversation title generation based on content
+
+- **12+ AI Platform Support** — OpenAI, Claude, Google Gemini, DeepSeek, SiliconFlow, MiniMax, Zhipu AI, Kimi, LM-Studio, Grok, OpenRouter, and custom OpenAI-compatible APIs
+- **Provider Pattern Architecture** — all AI integrations implement a shared provider abstraction
+- **Multi-Platform AI Management** — configure several providers at the same time with independent endpoints, API keys, model lists, and parameters
+- **Streaming Responses** — real-time token streaming for a responsive chat experience
+- **Thinking Mode** — visualize model reasoning/thinking state for providers that support it
+- **Auto Title Generation** — automatically generate conversation titles from chat content
 
 ### Data Management
-- **SQLite Database**: High-performance local data persistence using sqlite3
-- **Conversation Management**: Complete conversation history with local storage and intelligent caching
-- **Data Migration**: Automatic migration from SharedPreferences to SQLite
-- **Export/Import**: Multiple format support including TXT, JSON, PDF, and LumenFlow format ([LumenFlowFormatSpecification](./LumenFlowFormatSpecification.md))
+
+- **SQLite Database** — local persistence using `sqlite3`
+- **Conversation Management** — locally stored chat history with caching and search
+- **Automatic Data Migration** — migration from legacy SharedPreferences storage into SQLite
+- **Export / Import** — TXT, JSON, PDF, and LumenFlow-format exports
+- **Database Transactions** — ACID-style operations and foreign-key constraints
+- **Indexed Queries** — indexes on frequently accessed fields for better local performance
 
 ### User Experience
-- **Multi-Modal Support**: Process images, videos, and audio files with vision capabilities
-- **File Attachments**: Upload and extract content from various file types
-- **User Profiles**: Personalized settings with avatar, username, gender, and birthday customization
-- **Role Card Generator**: Built-in web-based character card generator for creating detailed AI personas
-- **Prompt Preset System**: Pre-configured role-playing prompts with rich character settings
-- **Multi-Language Presets**: Automatic language-specific preset loading based on interface language
-- **Theme Management**: Support for light/dark theme switching with system theme following
-- **Internationalization**: Full English, Chinese, Japanese, and Korean language support
+
+- **Multi-Modal Support** — images, videos, audio, and file-based content
+- **File Attachments** — upload and extract supported file content
+- **User Profiles** — avatar, username, gender, birthday, and preference customization
+- **Role Card Generator** — web-based persona/character card generation
+- **Prompt Presets** — role-playing and reusable prompt templates
+- **Multi-Language Presets** — preset language follows the selected interface language
+- **Theme Management** — light, dark, and system-theme behavior
+- **Internationalization** — English, Chinese, Japanese, and Korean
 
 ### Technical Features
-- **Local Notifications**: Real-time notification support for important events using `flutter_local_notifications`
-- **Markdown Rendering**: Beautifully formatted AI responses with code block copy functionality using `flutter_markdown_plus`
-- **Code Block Copy**: One-click copy functionality for code blocks in AI responses
-- **Message Copy**: One-click copy functionality for entire messages
-- **Performance Optimizations**: Reduced repaints and optimized chat performance with debouncing
-- **Retry Mechanism**: Automatic retry with exponential backoff for network errors
-- **Error Handling**: Comprehensive error handling with localized error messages in all supported languages
-- **Database Transactions**: ACID-compliant SQLite operations with foreign key constraints
 
-## Project Structure
+- **Local Notifications** with `flutter_local_notifications`
+- **Markdown Rendering** with `flutter_markdown_plus`
+- **Code Block Copy** and full-message copy actions
+- **Retry Mechanism** with exponential backoff
+- **Localized Error Handling** in all supported interface languages
+- **Performance Optimizations** with reduced repaints and debouncing
 
-```
-lib/
-├── main.dart                 # Application entry point
-├── l10n/                     # Internationalization files
-│   ├── app_en.arb           # English translations
-│   ├── app_zh.arb           # Chinese translations
-│   ├── app_ja.arb           # Japanese translations
-│   ├── app_ko.arb           # Korean translations
-│   ├── app_localizations.dart # Localization class
-│   └── app_localizations_*.dart # Language-specific implementations
-├── models/                   # Data models
-│   ├── conversation.dart     # Conversation model
-│   ├── message.dart          # Message model
-│   ├── user_profile.dart     # User profile model
-│   ├── attachment.dart       # Attachment model (files, images, etc.)
-│   ├── prompt_preset.dart    # Prompt preset model
-│   └── ai_platform.dart      # AI platform configuration model
-├── screens/                  # UI screens
-│   ├── chat_screen.dart      # Main chat interface
-│   ├── conversation_list_screen.dart  # Conversation history
-│   ├── settings_screen.dart  # Application settings
-│   ├── user_profile_screen.dart  # User profile management
-│   ├── about_screen.dart     # About page with app information
-│   ├── image_preview_screen.dart  # Image preview and viewing
-│   ├── platform_settings_screen.dart  # AI platform and model configuration
-│   ├── api_settings_screen.dart       # API settings
-│   ├── appearance_settings_screen.dart # Appearance settings
-│   ├── conversation_settings_screen.dart # Conversation settings
-│   ├── model_settings_screen.dart    # Model settings
-│   └── advanced_settings_screen.dart # Advanced settings
-├── services/                 # Business logic and API integration
-│   ├── ai_service.dart       # AI service integration
-│   ├── conversation_service.dart  # Conversation management
-│   ├── settings_service.dart # Settings management
-│   ├── conversation_database.dart   # SQLite database service
-│   ├── user_service.dart     # User profile management
-│   ├── file_service.dart     # File handling and processing
-│   ├── prompt_service.dart   # Prompt preset management
-│   ├── notification_service.dart # Notification service
-│   ├── version_service.dart  # Version information management
-│   ├── live_update_service.dart # Live update service
-│   └── http_server_service.dart # HTTP server for character card generator
-├── providers/                # AI provider implementations
-│   ├── ai_provider.dart     # Abstract base class
-│   ├── openai_provider.dart # OpenAI implementation
-│   ├── gemini_provider.dart # Gemini implementation
-│   ├── deepseek_provider.dart # DeepSeek implementation
-│   ├── claude_provider.dart   # Claude (Anthropic) implementation
-│   ├── siliconflow_provider.dart # SiliconFlow implementation
-│   ├── minimax_provider.dart  # MiniMax implementation
-│   ├── zhipu_provider.dart    # Zhipu AI implementation
-│   ├── kimi_provider.dart     # Kimi implementation
-│   ├── lmstudio_provider.dart # LM-Studio (local) implementation
-│   ├── grok_provider.dart     # Grok (xAI) implementation
-│   ├── openrouter_provider.dart # OpenRouter implementation
-│   └── other_provider.dart    # Other (OpenAI-compatible) implementation
-├── utils/                    # Utility classes
-│   └── app_theme.dart        # Application theme management
-└── widgets/                  # Reusable UI components
-    ├── avatar_widget.dart    # User avatar display
-    ├── chat_input.dart       # Chat input with file attachment
-    ├── message_bubble.dart   # Message display bubble
-    └── settings/             # Settings UI components
-        ├── settings_action_tile.dart
-        ├── settings_dropdown_tile.dart
-        ├── settings_input_tile.dart
-        ├── settings_navigation_tile.dart
-        ├── settings_section.dart
-        ├── settings_slider_tile.dart
-        └── settings_switch_tile.dart
+---
+
+## 🧩 Architecture
+
+The application follows a layered Flutter architecture:
+
+```text
+┌──────────────────────────────────────┐
+│               Screens                │
+│ Chat · Settings · Profile · History  │
+└─────────────────┬────────────────────┘
+                  │
+                  ▼
+┌──────────────────────────────────────┐
+│               Widgets                │
+│ Chat Input · Message Bubble · Tiles  │
+└─────────────────┬────────────────────┘
+                  │
+                  ▼
+┌──────────────────────────────────────┐
+│               Services               │
+│ AI · Conversation · Files · Settings │
+└──────────────┬──────────────┬────────┘
+               │              │
+               ▼              ▼
+┌──────────────────────┐  ┌──────────────────────┐
+│    AI Providers      │  │        SQLite        │
+│ OpenAI / Gemini /... │  │ Conversations / Msgs │
+└──────────────────────┘  └──────────────────────┘
 ```
 
-## Dependencies
+### Layers
+
+1. **Models** — application data structures
+2. **Services** — business logic, persistence, and API integration
+3. **Screens** — page-level Flutter UI
+4. **Widgets** — reusable user-interface components
+5. **Providers** — AI provider implementations behind an abstract interface
+6. **Localization** — ARB-based English, Chinese, Japanese, and Korean translations
+
+---
+
+## 🧠 Data Models
+
+| Model | Purpose |
+|---|---|
+| `Conversation` | Conversation metadata and message collection |
+| `Message` | Individual message content, sender, and status |
+| `UserProfile` | User-specific profile and preferences |
+| `Attachment` | Image, video, audio, and document attachment metadata |
+| `PromptPreset` | Reusable prompt/persona configuration |
+| `AIPlatform` | Provider endpoint, models, credentials, and provider settings |
+
+---
+
+## ⚙️ Services
+
+| Service | Responsibility |
+|---|---|
+| `AIService` | Request formatting, provider communication, streaming response handling, and multimodal support |
+| `ConversationService` | Conversation persistence and retrieval |
+| `SettingsService` | Application and multi-provider configuration |
+| `ConversationDatabase` | SQLite persistence and migration logic |
+| `UserService` | User profile management |
+| `FileService` | Attachment reading, extraction, and file processing |
+| `PromptService` | Prompt preset loading and management |
+| `NotificationService` | Local notifications |
+| `VersionService` | Version information |
+| `LiveUpdateService` | Application update handling |
+| `HttpServerService` | Embedded HTTP server for the character-card generator |
+
+---
+
+## 🤖 AI Provider Architecture
+
+The application uses `AIProvider` as an abstract base interface and provides provider-specific implementations.
+
+| Provider | Implementation |
+|---|---|
+| OpenAI | `OpenAIProvider` |
+| Google Gemini | `GeminiProvider` |
+| DeepSeek | `DeepSeekProvider` |
+| Claude / Anthropic | `ClaudeProvider` |
+| SiliconFlow | `SiliconFlowProvider` |
+| MiniMax | `MiniMaxProvider` |
+| Zhipu AI | `ZhipuProvider` |
+| Kimi | `KimiProvider` |
+| LM-Studio | `LMStudioProvider` |
+| Grok / xAI | `GrokProvider` |
+| OpenRouter | `OpenRouterProvider` |
+| Custom OpenAI-compatible API | `OtherProvider` |
+
+This provider pattern makes it possible to add a new AI service without redesigning the chat interface or conversation database.
+
+---
+
+## 🗄 SQLite Database Architecture
+
+The application stores chat data locally with SQLite.
+
+### Main tables
+
+```text
+conversations
+messages
+attachments
+settings
+```
+
+### Database characteristics
+
+- synchronized single-instance connection
+- foreign-key constraints
+- cascade delete behavior
+- transactional writes
+- automatic SharedPreferences → SQLite migration
+- indexes for frequently queried fields
+- platform-specific local database path
+
+### Storage locations
+
+```text
+Android       Application documents directory / conversations.db
+Windows       ~/.lumenflow/conversations.db
+Linux         ~/.lumenflow/conversations.db
+```
+
+All conversation data remains local unless it is explicitly sent to an AI provider as part of a request.
+
+---
+
+## 🛠 Project Structure
+
+```text
+Cross-Platform-AI-Chat-Application/
+│
+├── lib/
+│   ├── main.dart
+│   │
+│   ├── l10n/
+│   │   ├── app_en.arb
+│   │   ├── app_zh.arb
+│   │   ├── app_ja.arb
+│   │   ├── app_ko.arb
+│   │   └── app_localizations*.dart
+│   │
+│   ├── models/
+│   │   ├── conversation.dart
+│   │   ├── message.dart
+│   │   ├── user_profile.dart
+│   │   ├── attachment.dart
+│   │   ├── prompt_preset.dart
+│   │   └── ai_platform.dart
+│   │
+│   ├── screens/
+│   │   ├── chat_screen.dart
+│   │   ├── conversation_list_screen.dart
+│   │   ├── settings_screen.dart
+│   │   ├── user_profile_screen.dart
+│   │   ├── about_screen.dart
+│   │   ├── image_preview_screen.dart
+│   │   ├── platform_settings_screen.dart
+│   │   ├── api_settings_screen.dart
+│   │   ├── appearance_settings_screen.dart
+│   │   ├── conversation_settings_screen.dart
+│   │   ├── model_settings_screen.dart
+│   │   └── advanced_settings_screen.dart
+│   │
+│   ├── services/
+│   │   ├── ai_service.dart
+│   │   ├── conversation_service.dart
+│   │   ├── settings_service.dart
+│   │   ├── conversation_database.dart
+│   │   ├── user_service.dart
+│   │   ├── file_service.dart
+│   │   ├── prompt_service.dart
+│   │   ├── notification_service.dart
+│   │   ├── version_service.dart
+│   │   ├── live_update_service.dart
+│   │   └── http_server_service.dart
+│   │
+│   ├── providers/
+│   │   ├── ai_provider.dart
+│   │   ├── openai_provider.dart
+│   │   ├── gemini_provider.dart
+│   │   ├── deepseek_provider.dart
+│   │   ├── claude_provider.dart
+│   │   ├── siliconflow_provider.dart
+│   │   ├── minimax_provider.dart
+│   │   ├── zhipu_provider.dart
+│   │   ├── kimi_provider.dart
+│   │   ├── lmstudio_provider.dart
+│   │   ├── grok_provider.dart
+│   │   ├── openrouter_provider.dart
+│   │   └── other_provider.dart
+│   │
+│   ├── utils/
+│   │   └── app_theme.dart
+│   │
+│   └── widgets/
+│       ├── avatar_widget.dart
+│       ├── chat_input.dart
+│       ├── message_bubble.dart
+│       └── settings/
+│
+├── docs/
+│   └── images/
+│       ├── 01_hero_overview.png
+│       ├── 02_multi_ai_platforms.png
+│       ├── 03_multimodal_chat.png
+│       ├── 04_conversation_data.png
+│       └── 05_settings_localization.png
+│
+├── README.md
+└── LICENSE
+```
+
+---
+
+## 📦 Dependencies
 
 ### Core Framework
-- [Flutter](https://flutter.dev/) - UI framework
-- [cupertino_icons](https://pub.dev/packages/cupertino_icons) - iOS-style icons
+
+- `flutter`
+- `cupertino_icons`
 
 ### Networking & Data
-- [http](https://pub.dev/packages/http) ^1.6.0 - HTTP client for API requests
-- [sqlite3](https://pub.dev/packages/sqlite3) ^3.1.4 - SQLite database for local storage with foreign key support
-- [shared_preferences](https://pub.dev/packages/shared_preferences) ^2.5.4 - Legacy persistent storage (for migration)
+
+- `http` — API requests
+- `sqlite3` — local SQLite database
+- `shared_preferences` — legacy storage used for migration
 
 ### File Handling
-- [image_picker](https://pub.dev/packages/image_picker) ^1.2.1 - Image selection from gallery/camera
-- [file_picker](https://pub.dev/packages/file_picker) ^10.3.8 - File selection and picking with multiple file support
-- [path_provider](https://pub.dev/packages/path_provider) ^2.1.5 - Platform-specific path resolution
-- [path](https://pub.dev/packages/path) ^1.9.1 - Cross-platform path manipulation
-- [pdf](https://pub.dev/packages/pdf) ^3.11.3 - PDF file generation and processing for export
-- [archive](https://pub.dev/packages/archive) ^4.0.7 - Archive file (ZIP) creation and extraction for data export
+
+- `image_picker`
+- `file_picker`
+- `path_provider`
+- `path`
+- `pdf`
+- `archive`
 
 ### UI & Internationalization
-- [flutter_markdown_plus](https://pub.dev/packages/flutter_markdown_plus) ^1.0.7 - Enhanced Markdown rendering with code block copy support
-- [flutter_localizations](https://api.flutter.dev/flutter/flutter_localizations/flutter_localizations-library.html) - Flutter built-in localization support
-- [intl](https://pub.dev/packages/intl) any - Internationalization and localization with ARB files
-- [flutter_svg](https://pub.dev/packages/flutter_svg) ^2.2.3 - SVG image rendering for platform icons and UI elements
+
+- `flutter_markdown_plus`
+- `flutter_localizations`
+- `intl`
+- `flutter_svg`
 
 ### Utilities
-- [url_launcher](https://pub.dev/packages/url_launcher) ^6.3.2 - URL launching support for external links
-- [flutter_local_notifications](https://pub.dev/packages/flutter_local_notifications) ^19.5.0 - Local notifications for important events
 
-## Architecture
+- `url_launcher`
+- `flutter_local_notifications`
 
-The application follows a layered architecture pattern:
+---
 
-1. **Models**: Define the data structures used throughout the application
-2. **Services**: Handle business logic, API integrations, and data persistence
-3. **Screens**: High-level UI components that represent entire screens
-4. **Widgets**: Reusable UI components
-5. **Providers**: AI provider implementations with abstract interface
-6. **Localization**: Internationalization support with ARB files
+## 🔧 Configuration
 
-### Data Models
+Before chatting, configure at least one AI provider.
 
-- `Conversation`: Represents a chat conversation with metadata and a list of messages
-- `Message`: Represents a single message with content, sender information, and status
-- `UserProfile`: Stores user-specific settings and preferences
-- `Attachment`: Represents file attachments (images, videos, audio, documents) with metadata
-- `PromptPreset`: Represents pre-configured prompt presets with role-playing character settings
-- `AIPlatform`: Represents AI platform configuration with API endpoints, models, and platform-specific settings
+1. Open **Settings**.
+2. Select **Platform & Models**.
+3. Add a new platform or edit an existing platform.
+4. Enter the provider name, endpoint, and API key.
+5. Configure the model and generation parameters.
+6. Save the platform.
+7. Set it as the active provider.
 
-### Services
+Multiple providers can be configured simultaneously and switched when needed.
 
-- `AIService`: Handles communication with multiple AI providers, including request formatting, response parsing, and multi-modal support
-- `ConversationService`: Manages local conversation storage and retrieval using SQLite
-- `SettingsService`: Manages application settings and configuration, including multi-AI platform management
-- `ConversationDatabase`: SQLite database implementation with automatic migration from SharedPreferences
-- `UserService`: Manages user profile data
-- `FileService`: Handles file operations, including reading, processing, and extracting content from attachments
-- `PromptService`: Manages prompt preset data and configuration
-- `NotificationService`: Handles local notifications
-- `VersionService`: Version information management
-- `LiveUpdateService`: Real-time application updates
-- `HttpServerService`: Embedded HTTP server for web-based character card generator
+### Common defaults
 
-### AI Providers
+```text
+Temperature    0.7
+Max Tokens     8192
+```
 
-The application uses a provider-based architecture for AI integration:
+Provider model defaults are stored independently per platform and can be changed from settings.
 
-- `AIProvider`: Abstract base class defining the interface for all AI providers
-- `OpenAIProvider`: Implementation for OpenAI API with multi-modal support
-- `GeminiProvider`: Implementation for Google Gemini API with multi-modal support
-- `DeepSeekProvider`: Implementation for DeepSeek API with streaming capabilities
-- `ClaudeProvider`: Implementation for Claude (Anthropic) API with multi-modal and thinking mode
-- `SiliconFlowProvider`: Implementation for SiliconFlow API
-- `MiniMaxProvider`: Implementation for MiniMax API
-- `ZhipuProvider`: Implementation for Zhipu AI API
-- `KimiProvider`: Implementation for Kimi API
-- `LMStudioProvider`: Implementation for LM-Studio (local deployment) with OpenAI Responses API
-- `GrokProvider`: Implementation for Grok (xAI) API with multi-modal support
-- `OpenRouterProvider`: Implementation for OpenRouter API with multi-provider model access
-- `OtherProvider`: Implementation for OpenAI-compatible APIs (custom endpoints)
+> [!IMPORTANT]
+> API endpoints, model names, and provider capabilities can change over time. Treat configured values as user-managed settings rather than permanent application constants.
 
-This architecture allows for easy addition of new AI providers while maintaining a consistent interface across all providers.
+---
 
-### SQLite Database Architecture
+## 🎭 Prompt Presets
 
-The application uses SQLite for local data persistence with the following features:
+The application includes file-based prompt presets with multilingual support.
 
-- **Single Instance**: Global database connection with synchronized write operations
-- **Foreign Key Constraints**: Ensures data integrity with cascade delete
-- **Automatic Migration**: Seamless data migration from SharedPreferences to SQLite
-- **Indexing**: Optimized queries with indexes on frequently accessed fields
-- **Transaction Support**: ACID-compliant operations for data consistency
+```text
+assets/prompt/characters/en/
+assets/prompt/characters/zh/
+assets/prompt/characters/ja/
+assets/prompt/characters/ko/
+```
 
-**Database Schema**:
-- `conversations`: Stores conversation metadata (id, title, timestamps)
-- `messages`: Stores messages with conversation reference and status
-- `attachments`: Stores file attachments with message reference
-- `settings`: Stores application settings and metadata
+A preset can point to an XML or TXT system-prompt definition.
 
-### Multi-AI Platform Management
+Example:
 
-LumenFlow supports managing multiple AI platforms simultaneously. Each platform can have its own configuration, model lists, and settings. Key features include:
-
-- **Multiple Platform Support**: Configure and manage 10+ AI platforms in a single application
-- **Platform Switching**: Easily switch between configured platforms during conversations
-- **Model Management**: Each platform maintains its own model list, with support for automatic model list fetching
-- **Platform Icons**: Visual identification with platform-specific SVG icons
-- **Configuration Migration**: Automatic migration from legacy single-platform configuration to multi-platform configuration
-- **Platform-Specific Settings**: Each platform can have independent API endpoints, authentication methods, and model parameters
-
-The platform management interface is accessible through the "Platform & Models" section in the settings screen.
-
-## Configuration
-
-Before using the application, you need to configure at least one AI platform with your API keys:
-
-1. Navigate to the Settings screen
-2. Select "Platform & Models" to access platform configuration
-3. Add a new platform or edit an existing one
-4. Enter the platform name, API endpoint, and API key
-5. Configure model parameters (default model, temperature, max tokens)
-6. Save the platform configuration
-7. Set the platform as active for use in conversations
-
-You can configure multiple platforms and switch between them as needed.
-
-### Supported AI Providers
-
-1. **OpenAI**
-   - API Endpoint: `https://api.openai.com/v1/responses`
-   - Supported models: GPT-5.2, GPT-o3, and other OpenAI models
-   - Multi-modal support for images, videos, and audio
-
-2. **Google Gemini**
-   - API Endpoint: `https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent`
-   - Supported models: Gemini 3 Flash, Gemini 3 Pro
-   - Multi-modal capabilities
-
-3. **DeepSeek**
-   - API Endpoint: `https://api.deepseek.com/chat/completions`
-   - Supported models: DeepSeek-V3.2
-   - Text-only support with streaming capabilities
-
-4. **Claude (Anthropic)**
-   - API Endpoint: `https://api.anthropic.com/v1/messages`
-   - Supported models: Claude Sonnet 4.5, Claude Opus 4.5
-   - Multi-modal support for images with thinking mode capability
-
-5. **SiliconFlow**
-   - API Endpoint: `https://api.siliconflow.cn/v1/chat/completions`
-   - Supported models: Various open-source models (Qwen, DeepSeek, etc.)
-   - Text-only support
-
-6. **MiniMax**
-   - API Endpoint: `https://api.minimax.chat/v1/text/chatcompletion_v2`
-   - Supported models: MiniMax proprietary models
-   - Text-only support
-
-7. **Zhipu AI**
-   - API Endpoint: `https://open.bigmodel.cn/api/paas/v4/chat/completions`
-   - Supported models: GLM series models
-   - Text-only support
-
-8. **Kimi**
-   - API Endpoint: `https://api.moonshot.cn/v1/chat/completions`
-   - Supported models: Kimi models
-   - Text-only support with long context capabilities
-
-9. **LM-Studio (Local)**
-   - API Endpoint: Custom local endpoint (default: `http://localhost:1234/v1/responses`)
-   - Supported models: Local LLMs hosted via LM-Studio
-   - Uses OpenAI Responses API format
-
-10. **Grok (xAI)**
-    - API Endpoint: `https://api.x.ai/v1/responses`
-    - Supported models: Grok models
-    - Multi-modal support with thinking mode capability
-
-11. **OpenRouter**
-    - API Endpoint: `https://openrouter.ai/api/v1/responses`
-    - Supported models: Various models from multiple providers
-    - OpenAI-compatible API format
-
-12. **Other (Custom API)**
-    - API Endpoint: `https://URL/v1/chat/completions`
-    - Supported models: User-defined model list
-    - OpenAI chat completions format compatibility
-
-### Default Values
-
-When configuring a new platform, the following default values are used:
-
-- **Default Platform Type**: OpenAI
-- **Default Models**:
-  - OpenAI：`gpt-5`
-  - Gemini：`gemini-3-flash-preview`
-  - DeepSeek：`deepseek-chat`
-  - Claude：`claude-sonnet-4.5`
-  - SiliconFlow：`Qwen/Qwen2.5-32B-Instruct`
-  - MiniMax：`MiniMax-M2.1`
-  - 智谱AI：`glm-4.7`
-  - Kimi：`moonshot-k2`
-  - LM-Studio：`local-model`
-- **Temperature**: `0.7`
-- **Max Tokens**: `8192`
-
-Note: These defaults apply when creating a new platform configuration. You can customize these values for each platform independently.
-
-### Prompt Presets
-
-LumenFlow includes an advanced role-playing system with file-based prompt presets that support multiple languages. The system automatically loads the appropriate language version based on the user's selected interface language.
-
-#### How It Works
-- **Multi-Language Support**: Presets are available in English, Chinese, Japanese, and Korean versions
-- **Automatic Language Detection**: The system automatically loads presets based on the current interface language setting
-- **File-Based Presets**: The `system_prompt` field in preset files points to XML/TXT files (e.g., `"characters/zh/NingXi.xml"`)
-- **Automatic Content Loading**: The system automatically loads the file content and uses it as the system prompt
-- **Variable Substitution**: Supports `\${userProfile.username}` replacement with actual user names
-- **XML Format**: Rich XML structure for detailed character definitions with meta information, personality logic, addressing protocols, and example dialogues
-
-#### Using Presets
-1. Navigate to the chat interface
-2. Click the "Role-Play" button and select a character from the preset menu
-3. The selected character's complete personality system will be applied to the conversation
-4. AI responses will reflect the character's traits, speech patterns, and behaviors in the selected language
-
-#### Customizing & Adding Presets
-1. Create XML/TXT files in the appropriate language directory (`assets/prompt/characters/zh/` for Chinese, `assets/prompt/characters/en/` for English, etc.)
-2. Add entries to the corresponding presets JSON file with `system_prompt` pointing to the correct file path
-3. Follow the XML format structure for consistent character definitions
-4. Restart the application to load new presets
-
-##### Example presets-*.json Structure
 ```json
 {
-  "id": "ningxi",
-  "name": "NingXi",
-  "description": "A playful, adorable cat-girl",
-  "system_prompt": "characters/zh(or en)/NingXi.xml",
+  "id": "assistant",
+  "name": "Assistant",
+  "description": "A reusable AI persona",
+  "system_prompt": "characters/en/assistant.xml",
   "icon": "person.fill"
 }
 ```
-##### Example character.xml Structure
-```xml
-<system_instruction>
-   <mate>
-      <role_name>NAME</role_name>
-      <identity>TEXT</identity>
-      <core_philosophy>TEXT</core_philosophy>
-   </mate>
-   <personality_logic>TEXT</personality_logic>
-   <addressing_protocol>TEXT</addressing_protocol>
-   <linguistic_style>TEXT</linguistic_style>
-   <behavior_narrative_rules>TEXT</behavior_narrative_rules>
-   <interaction_strategy>TEXT</interaction_strategy>
-   <internal_monologue>TEXT</internal_monologue>
-   <emotional_depth>TEXT</emotional_depth>
-   <knowledge_filter>TEXT</knowledge_filter>
-   <user_info>TEXT</user_info>
-   <example_dialogue>TEXT</example_dialogue>
-</system_instruction>
+
+Supported features include:
+
+- automatic language-based preset selection
+- file-based system prompts
+- `${userProfile.username}` variable substitution
+- structured XML character definitions
+- role-play behavior, linguistic style, interaction rules, and example dialogue
+
+---
+
+## 🌐 Internationalization
+
+The interface supports:
+
+- English
+- Chinese
+- Japanese
+- Korean
+
+Localization uses Flutter ARB files and the selected interface language also controls which prompt-preset language is loaded.
+
+---
+
+## 📤 Export & Import
+
+Supported export formats include:
+
+```text
+TXT
+JSON
+PDF
+LumenFlow Format
 ```
 
-## Data Storage
+The application also supports settings export/import for backup and restore.
 
-### SQLite Database
+> [!WARNING]
+> Exported settings may include sensitive configuration such as API keys. Store exported files securely.
 
-The application uses SQLite for local data storage, providing high performance and reliability:
+---
 
-- **Location**: Platform-specific data directory
-  - Android: Application documents directory (`conversations.db`)
-  - Windows/Linux: User home directory (`.lumenflow/conversations.db`)
-- **Tables**:
-  - `conversations`: Stores conversation metadata
-  - `messages`: Stores message content and metadata
-  - `attachments`: Stores file attachment information
-  - `settings`: Stores application settings
-- **Features**:
-  - Foreign key constraints for data integrity
-  - Automatic migration from legacy SharedPreferences
-  - Transaction support for data consistency
-  - Indexed queries for optimal performance
+## 🧱 Building
 
-**Stored Data**:
-- User settings and API keys
-- Conversation history with full message content
-- User profile information
-- Attachment metadata and file references
-
-All data is stored locally on the device and is not synchronized across devices.
-
-### Data Migration
-
-The application automatically migrates data from SharedPreferences to SQLite on first launch. This ensures:
-
-- Seamless transition from previous versions
-- No data loss during migration
-- Transaction-based migration with rollback on failure
-
-## Settings Management
-
-LumenFlow provides settings export and import functionality to backup and restore your application configuration.
-
-### Exporting Settings
-1. Navigate to the Settings screen
-2. Scroll to the "Data Management" section
-3. Tap "Export Settings"
-4. Choose a location to save the JSON file
-5. Your settings (including API keys, preferences, and user profile) will be saved
-
-### Importing Settings
-1. Navigate to the Settings screen
-2. Scroll to the "Data Management" section
-3. Tap "Import Settings"
-4. Select a previously exported JSON file
-5. Confirm to restore settings from the file
-
-### Resetting to Default
-1. Navigate to the Settings screen
-2. Scroll to the "Data Management" section
-3. Tap "Restore Default Settings"
-4. Confirm to reset all settings to default values
-
-**Note**: API keys and sensitive information are included in exported files. Keep these files secure.
-
-## Internationalization
-
-LumenFlow supports English, Chinese, Japanese, and Korean languages. The application automatically detects the system language or allows manual selection in settings. All interface elements, AI responses, and prompt presets are fully localized.
-
-### Language Support
-- **English**: Complete English localization for all interface elements and AI responses
-- **Chinese**: Complete Chinese localization for all interface elements and AI responses
-- **Japanese**: Complete Japanese localization for all interface elements and AI responses
-- **Korean**: Complete Korean localization for all interface elements and AI responses
-
-### Implementation
-- Uses Flutter's built-in localization system with ARB files
-- AI responses are localized based on selected language
-- Prompt presets automatically load the appropriate language version
-- Character definitions are available in multiple languages with separate XML files
-
-## Building
-
-To build the application, ensure you have Flutter installed and set up:
+Install dependencies:
 
 ```bash
-# Install dependencies
 flutter pub get
+```
 
-# Build for Android (APK with ABI splitting)
+### Android
+
+```bash
 flutter build apk --split-per-abi
+```
 
-# Build for Windows (Release mode)
+### Windows
+
+```bash
 flutter build windows --release
+```
 
-# Build for Linux (Release mode)
+### Linux
+
+```bash
 flutter build linux --release
 ```
 
-### Using Build Scripts
+### Included build scripts
 
-The project includes platform-specific build scripts:
+**Windows PowerShell**
 
-**Windows (PowerShell)**:
 ```powershell
-# Build Android APK
 .\build_apk.ps1
-
-# Build Windows EXE
 .\build_exe.ps1
 ```
 
-**Linux (Bash)**:
+**Linux**
+
 ```bash
-# Build Linux ELF
 ./build_elf.sh
 ```
 
-These scripts handle the specific build configurations for each platform.
+---
 
-## Error Handling
+## 🧯 Error Handling
 
-The application includes comprehensive error handling implemented in `AIService._handleError()`:
+The application handles:
 
-- **Network Errors**: Timeouts, connection failures, socket errors, TLS/SSL handshake failures
-- **API Errors**: Invalid API keys, rate limits, quota exceeded, model not found
-- **Data Errors**: JSON parsing errors, invalid response formats
-- **File Errors**: File size limits, unsupported file types, extraction failures
-- **Database Errors**: SQLite constraints, transaction failures, migration errors
-- **Localization Errors**: Missing translations, format errors
+- network timeouts and connection failures
+- TLS/SSL errors
+- invalid API keys
+- rate limits and quota errors
+- missing models
+- malformed responses
+- file size and format errors
+- SQLite constraint and transaction errors
+- migration failures
+- missing localization values
 
-**Error Handling Features**:
-- Localized error messages in all supported languages (English, Chinese, Japanese, Korean)
-- User-friendly error messages that hide technical details
-- Automatic retry with exponential backoff for network errors
-- Graceful degradation when features are unavailable
-- Comprehensive logging for debugging purposes
+The error layer provides localized user-facing messages, automatic retry with exponential backoff for suitable network errors, graceful degradation, and internal logging.
 
-Errors are displayed to users through localized UI messages in the chat interface or as system alerts.
+---
 
-## License
+## 🔐 Privacy & Local Data Notes
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+- Conversation history is stored locally in SQLite.
+- User profiles and local application settings remain on the device.
+- Attachments are represented locally with stored metadata and file references.
+- API requests still send the selected conversation/input data to the configured AI provider when a request is made.
+- Settings exports may contain sensitive provider credentials.
 
-## Contributing
+---
 
-Contributions are welcome! Please feel free to submit issues and pull requests for improvements, bug fixes, or new features.
+## 🗺 Future Direction
 
-## Acknowledgments
+Possible future improvements for this architecture include:
 
-- Built with [Flutter](https://flutter.dev/)
-- AI capabilities powered by [OpenAI](https://openai.com/), [Google Gemini](https://gemini.google.com/), [Claude](https://www.anthropic.com/), [DeepSeek](https://www.deepseek.com/), [SiliconFlow](https://www.siliconflow.cn/), [MiniMax](https://www.minimaxi.com/), [Zhipu AI](https://www.zhipuai.cn/), [Kimi](https://kimi.moonshot.cn/), and LM-Studio
-- Internationalization support using Flutter's localization system
-- Icons provided by [Cupertino Icons](https://pub.dev/packages/cupertino_icons)
+- macOS support
+- richer offline/local-model workflows
+- cross-device encrypted synchronization
+- provider capability discovery
+- encrypted local credential storage
+- additional export formats
+- richer prompt library management
+- plugin/tool calling layer
+- advanced conversation search
 
-## Sponsor
+---
 
-![Sponsor Code](./assets/collection_code.png)
+## 🤝 Contributing
 
-If you find this app helpful, please scan the code to sponsor and support development.
+Contributions, bug fixes, provider integrations, UI improvements, and localization updates are welcome.
+
+---
+
+## 📄 License
+
+This project is licensed under the **MIT License**.
+
+---
+
+<p align="center">
+  <strong>Cross-Platform-AI-Chat-Application</strong><br/>
+  <sub>One Interface → Multiple AI Providers → Conversations Everywhere</sub>
+</p>
+ 
+---
+ 
+## 👨‍💻 Developer
+ 
+<table>
+  <tr>
+    <td width="150" align="center">
+      <img src="https://github.com/AsadAliEng.png?size=160" width="120" alt="Asad Ali GitHub avatar"><br>
+      <strong>Asad Ali</strong>
+    </td>
+    <td>
+      <strong>AI, Blockchain & Software Engineer</strong><br><br>
+      🐙 GitHub: <a href="https://github.com/AsadAliEng">@AsadAliEng</a><br>
+      📧 Email: <a href="mailto:asadali.cryptoeng@gmail.com">asadali.cryptoeng@gmail.com</a><br>
+      🚀 Focus: intelligent systems, applied machine learning, AI security, Web3 products, automation, and production-oriented engineering
+    </td>
+  </tr>
+</table>
+
